@@ -4,10 +4,12 @@ const Total = ({ parts }) => {
   return (
     <section>
       <p>
-        Number of exercises :{" "}
-        {parts.reduce((total, part) => {
-          return total + part.exercises;
-        }, 0)}
+        <strong>
+          Total Number of exercises :{" "}
+          {parts.reduce((total, part) => {
+            return total + part.exercises;
+          }, 0)}
+        </strong>
       </p>
     </section>
   );
