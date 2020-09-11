@@ -22,3 +22,19 @@ input {
 input[type="submit"] {
   padding: 8px 20px;
 }
+
+.error-blck {
+  margin: 10px 0;
+  padding: 12px;
+  background: #ffffff;
+  color: #f84646;
+  border: 1px solid #f84646;
+}
+
+.success-blck {
+  margin: 10px 0;
+  padding: 12px;
+  background: #ffffff;
+  color: #4a4acf;
+  border: 1px solid #4a4acf;
+}

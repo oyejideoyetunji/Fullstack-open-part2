@@ -1,18 +1,60 @@
 import React from "react";
 
-const PhoneBookForm = ({ contacts, setContacts, contact, setContact }) => {
+import { create, update } from "../services/persons";
+
+const PhoneBookForm = ({
+  contacts,
+  setContacts,
+  contact,
+  setContact,
+  setStatusData,
+}) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     let existingContact = contacts.find((element) => {
       return element.name === contact.name || element.number === contact.number;
     });
     if (existingContact !== undefined) {
-      alert(
-        `The contact ${contact.name} with number ${contact.number} already exists`
-      );
+      if (existingContact.number !== contact.number) {
+        let shouldUpdate = window.confirm(
+          `Your contact ${contact.name} already exists, update the old number to a new one?`
+        );
+        return shouldUpdate
+          ? update(existingContact.id, contact).then((response) => {
+              setContacts(
+                contacts.map((contact) => {
+                  return contact.id === response.data.id
+                    ? response.data
+                    : contact;
+                })
+              );
+              setContact({ name: "", number: "" });
+            })
+          : null;
+      }
+      setStatusData({
+        text: `A contact ${existingContact.name} with the number ${existingContact.number} already exists`,
+        type: "error",
+      });
+      setTimeout(() => {
+        setStatusData(null);
+        return;
+      }, 2000);
       return;
     }
-    setContacts([...contacts, contact]);
+
+    create(contact).then((response) => {
+      setContacts(contacts.concat(response.data));
+      setContact({ name: "", number: "" });
+      setStatusData({
+        text: `${response.data.name} added successfully`,
+        type: "success",
+      });
+      setTimeout(() => {
+        setStatusData(null);
+      }, 2000);
+      return;
+    });
   };
 
   const handleInputChange = (event) => {

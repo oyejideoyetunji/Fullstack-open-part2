@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { getAll, deleteObject } from "./services/persons";
 
 import PhoneBookFilter from "./components/PhoneBookFilter";
 import PhoneBookForm from "./components/PhoneBookForm";
 import Contacts from "./components/Contacts";
+import StatusDisplay from "./components/StatusDisplay";
 
 function App() {
   let [contacts, setContacts] = useState([]);
-  //   [
-  //   { name: "Arto Hellas", number: "040-123456" },
-  //   { name: "Ada Lovelace", number: "39-44-5323523" },
-  //   { name: "Dan Abramov", number: "12-43-234345" },
-  //   { name: "Mary Poppendieck", number: "39-23-6423122" },
-  // ]
   let [contact, setContact] = useState({ name: "", number: "" });
   let [filterValue, setFilterValue] = useState("");
+  let [statusData, setStatusData] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
+    getAll().then((response) => {
       setContacts(response.data);
     });
   }, []);
@@ -33,9 +29,21 @@ function App() {
     });
   };
 
+  const handleContactDelete = (id, name) => {
+    let shouldDelete = window.confirm(`delete ${name} from contacts?`);
+    if (shouldDelete) {
+      return deleteObject(id).then((response) => {
+        setContacts(contacts.filter((contact) => contact.id !== id));
+      });
+    } else {
+      return;
+    }
+  };
+
   return (
     <main>
       <h1>Phone Book</h1>
+      <StatusDisplay statusData={statusData} />
       <PhoneBookFilter
         filterValue={filterValue}
         setFilterValue={setFilterValue}
@@ -45,10 +53,12 @@ function App() {
         setContacts={setContacts}
         contact={contact}
         setContact={setContact}
+        setStatusData={setStatusData}
       />
       <Contacts
         contactsToShow={getContactsToShow()}
         filterValue={filterValue}
+        handleContactDelete={handleContactDelete}
       />
     </main>
   );
