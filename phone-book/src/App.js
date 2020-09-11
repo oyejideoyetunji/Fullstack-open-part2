@@ -29,11 +29,18 @@ function App() {
     });
   };
 
-  const handleContactDelete = (id, name) => {
+  const handleContactDelete = ({ name, id }) => {
     let shouldDelete = window.confirm(`delete ${name} from contacts?`);
     if (shouldDelete) {
-      return deleteObject(id).then((response) => {
+      return deleteObject(id).then(() => {
         setContacts(contacts.filter((contact) => contact.id !== id));
+        setStatusData({
+          text: `${name} deleted successfully`,
+          type: "success",
+        });
+        setTimeout(() => {
+          setStatusData(null);
+        }, 2000);
       });
     } else {
       return;
@@ -43,11 +50,11 @@ function App() {
   return (
     <main>
       <h1>Phone Book</h1>
-      <StatusDisplay statusData={statusData} />
       <PhoneBookFilter
         filterValue={filterValue}
         setFilterValue={setFilterValue}
       />
+      <StatusDisplay statusData={statusData} />
       <PhoneBookForm
         contacts={contacts}
         setContacts={setContacts}

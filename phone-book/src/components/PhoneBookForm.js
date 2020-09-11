@@ -20,16 +20,33 @@ const PhoneBookForm = ({
           `Your contact ${contact.name} already exists, update the old number to a new one?`
         );
         return shouldUpdate
-          ? update(existingContact.id, contact).then((response) => {
-              setContacts(
-                contacts.map((contact) => {
-                  return contact.id === response.data.id
-                    ? response.data
-                    : contact;
-                })
-              );
-              setContact({ name: "", number: "" });
-            })
+          ? update(existingContact.id, contact)
+              .then((response) => {
+                setContacts(
+                  contacts.map((contact) => {
+                    return contact.id === response.data.id
+                      ? response.data
+                      : contact;
+                  })
+                );
+                setStatusData({
+                  text: `${response.data.name} updated successfully`,
+                  type: "success",
+                });
+                setTimeout(() => {
+                  setStatusData(null);
+                }, 2000);
+                setContact({ name: "", number: "" });
+              })
+              .catch((error) => {
+                setStatusData({
+                  text: `There was a problem updating ${contact.name} this contact might have been deleted already`,
+                  type: "error",
+                });
+                setTimeout(() => {
+                  setStatusData(null);
+                }, 2000);
+              })
           : null;
       }
       setStatusData({

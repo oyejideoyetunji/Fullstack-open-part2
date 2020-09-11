@@ -12,14 +12,10 @@ const Contacts = ({ contactsToShow, filterValue, handleContactDelete }) => {
         )
       ) : (
         contactsToShow.map((contact) => (
-          <p key={contact.name}>
+          <p key={contact.id}>
             <i>Name : {contact.name} </i>{" "}
             <span> | Number : {contact.number} </span>{" "}
-            <button
-              onClick={() => handleContactDelete(contact.id, contact.name)}
-            >
-              DELETE
-            </button>
+            <button onClick={() => handleContactDelete(contact)}>DELETE</button>
           </p>
         ))
       )}
