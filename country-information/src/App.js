@@ -26,13 +26,15 @@ function App() {
 
   const getCountriesToShow = (filterVal) => {
     let formatedFilterVal = filterVal.trim().toLowerCase();
-    if (formatedFilterVal === "") return null;
+    if (formatedFilterVal === "") return undefined;
     let matchCountries = countries.filter((country) => {
       return country.name.toLowerCase().includes(formatedFilterVal);
     });
     console.log(matchCountries);
-    if (matchCountries.length > 10 || matchCountries.length < 1) {
+    if (matchCountries.length > 10) {
       return null;
+    } else if (matchCountries.length < 1) {
+      return [];
     }
     return matchCountries;
   };
