@@ -10,3 +10,16 @@ body {
 main {
   padding: 0 18px;
 }
+
+section {
+  margin: 20px auto;
+}
+
+h1.hd-ctr {
+  text-align: center;
+}
+
+img {
+  max-width: 250px;
+  max-height: 250px;
+}

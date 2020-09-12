@@ -1,11 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 
-const SearchBlock = ({ filterCountriesToShow }) => {
-  let [searchVal, setSearchVal] = useState("");
-
+const SearchBlock = ({ searchVal, setSearchVal }) => {
   const handleInputChange = (event) => {
     setSearchVal(event.target.value);
-    filterCountriesToShow(searchVal);
   };
 
   return (

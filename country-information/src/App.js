@@ -6,7 +6,7 @@ import CountryDetails from "./components/CountryDetails";
 
 function App() {
   let [countries, setCountries] = useState(null);
-  let [countriesToShow, setCountriesToShow] = useState(null);
+  let [searchVal, setSearchVal] = useState("");
 
   useEffect(() => {
     axios.get("https://restcountries.eu/rest/v2/all").then((resp) => {
@@ -22,21 +22,26 @@ function App() {
       });
       setCountries(countriesData);
     });
-  });
+  }, []);
 
-  const filterCountriesToShow = (filterVal) => {
+  const getCountriesToShow = (filterVal) => {
+    let formatedFilterVal = filterVal.trim().toLowerCase();
+    if (formatedFilterVal === "") return null;
     let matchCountries = countries.filter((country) => {
-      return country.name.includes(filterVal);
+      return country.name.toLowerCase().includes(formatedFilterVal);
     });
-    if (matchCountries.length >= 10) setCountriesToShow(null);
-    setCountriesToShow(matchCountries);
+    console.log(matchCountries);
+    if (matchCountries.length > 10 || matchCountries.length < 1) {
+      return null;
+    }
+    return matchCountries;
   };
 
   return (
     <main>
       <h1>Get country information on the Go!!</h1>
-      <SearchBlock filterCountriesToShow={filterCountriesToShow} />
-      <CountryDetails countries={countriesToShow} />
+      <SearchBlock searchVal={searchVal} setSearchVal={setSearchVal} />
+      <CountryDetails countriesToShow={getCountriesToShow(searchVal)} />
     </main>
   );
 }
