@@ -9,28 +9,32 @@ function App() {
   let [searchVal, setSearchVal] = useState("");
 
   useEffect(() => {
-    axios.get("https://restcountries.eu/rest/v2/all").then((resp) => {
-      let countriesData = resp.data.map((obj) => {
-        return {
-          name: obj.name,
-          capital: obj.capital,
-          population: obj.population,
-          region: obj.region,
-          flag: obj.flag,
-          languages: obj.languages.map((el) => el.name),
-        };
+    axios
+      .get("https://restcountries.eu/rest/v2/all")
+      .then((resp) => {
+        let countriesData = resp.data.map((obj) => {
+          return {
+            name: obj.name,
+            capital: obj.capital,
+            population: obj.population,
+            region: obj.region,
+            flag: obj.flag,
+            languages: obj.languages.map((el) => el.name),
+          };
+        });
+        setCountries(countriesData);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      setCountries(countriesData);
-    });
   }, []);
 
-  const getCountriesToShow = (filterVal) => {
-    let formatedFilterVal = filterVal.trim().toLowerCase();
+  const getCountriesToShow = () => {
+    let formatedFilterVal = searchVal.trim().toLowerCase();
     if (formatedFilterVal === "") return undefined;
     let matchCountries = countries.filter((country) => {
       return country.name.toLowerCase().includes(formatedFilterVal);
     });
-    console.log(matchCountries);
     if (matchCountries.length > 10) {
       return null;
     } else if (matchCountries.length < 1) {
@@ -43,7 +47,7 @@ function App() {
     <main>
       <h1>Get country information on the Go!!</h1>
       <SearchBlock searchVal={searchVal} setSearchVal={setSearchVal} />
-      <CountryDetails countriesToShow={getCountriesToShow(searchVal)} />
+      <CountryDetails countriesToShow={getCountriesToShow()} />
     </main>
   );
 }
