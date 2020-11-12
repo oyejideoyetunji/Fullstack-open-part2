@@ -14,6 +14,6 @@ export const deleteObject = (id) => axios.delete(`${baseUrl}/${id}`);
 
 /**
  * json server url http://localhost:3001/persons
- * 
+ * local dev server url http://localhost:3001/api/persons
  * live server base url https://phonenote.herokuapp.com
  */
