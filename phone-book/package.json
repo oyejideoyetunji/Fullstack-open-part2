@@ -36,5 +36,5 @@
   "devDependencies": {
     "json-server": "^0.16.1"
   },
-  "proxy": "https://phonenote.herokuapp.com"
+  "proxy": "http://localhost:3001"
 }
