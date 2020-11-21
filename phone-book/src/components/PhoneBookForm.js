@@ -38,9 +38,9 @@ const PhoneBookForm = ({
                 }, 2000);
                 setContact({ name: "", number: "" });
               })
-              .catch((error) => {
+              .catch((response) => {
                 setStatusData({
-                  text: `There was a problem updating ${contact.name} this contact might have been deleted already`,
+                  text: response.error,
                   type: "error",
                 });
                 setTimeout(() => {
@@ -71,7 +71,16 @@ const PhoneBookForm = ({
         setStatusData(null);
       }, 2000);
       return;
-    });
+    }).catch(response =>{
+        setStatusData({
+            text: response.error,
+            type: "error",
+        });
+        setTimeout(() => {
+            setStatusData(null);
+        }, 2000);
+        return;
+    })
   };
 
   const handleInputChange = (event) => {

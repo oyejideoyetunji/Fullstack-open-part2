@@ -15,6 +15,14 @@ function App() {
   useEffect(() => {
     getAll().then((response) => {
       setContacts(response.data);
+    }).catch((response) => {
+        setStatusData({
+            text: response.error,
+            type: "error",
+        });
+        setTimeout(() => {
+            setStatusData(null);
+        }, 2000);
     });
   }, []);
 
@@ -41,6 +49,14 @@ function App() {
         setTimeout(() => {
           setStatusData(null);
         }, 2000);
+      }).catch((response) => {
+          setStatusData({
+              text: response.error,
+              type: "error",
+          });
+          setTimeout(() => {
+              setStatusData(null);
+          }, 2000);
       });
     } else {
       return;
