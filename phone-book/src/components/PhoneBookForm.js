@@ -38,15 +38,15 @@ const PhoneBookForm = ({
                 }, 2000);
                 setContact({ name: "", number: "" });
               })
-              .catch((response) => {
-                setStatusData({
-                  text: response.error,
-                  type: "error",
-                });
-                setTimeout(() => {
-                  setStatusData(null);
-                }, 2000);
-              })
+                .catch((error) => {
+                    setStatusData({
+                        text: error.response.data.message,
+                        type: "error",
+                    });
+                    setTimeout(() => {
+                        setStatusData(null);
+                    }, 5000);
+                })
           : null;
       }
       setStatusData({
@@ -70,16 +70,15 @@ const PhoneBookForm = ({
       setTimeout(() => {
         setStatusData(null);
       }, 2000);
-      return;
-    }).catch(response =>{
+    })
+    .catch(( error) =>{
         setStatusData({
-            text: response.error,
+            text: error.response.data.message,
             type: "error",
         });
         setTimeout(() => {
             setStatusData(null);
-        }, 2000);
-        return;
+        }, 5000);
     })
   };
 
